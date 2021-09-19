@@ -1,25 +1,23 @@
 package ru.startandroid.develop.myretrofit
 
+import android.provider.ContactsContract
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
 
-    interface API {
+interface API {
+    @GET("users")
+    fun getUsers(): Call<List<User>>
 
-        @GET("users")
-        fun getPosts(): Call<List<User>>
+    @GET("users/{id}")
+    fun getUser(
+        @Path("id") id: Int
+    ): Call<User>
+}
 
-        @GET("users/{id}")
-        fun getPost(
-            @Path("id") id: Int
-        ): Call<User>
-
-    }
-
-
-    data class User(
-        val userId: Int,
-        val id: Int,
-        val title: String,
-        val body: String
-    )
+data class User(
+    val id: Int,
+    val name: String,
+    val username: String,
+    val email: String
+)

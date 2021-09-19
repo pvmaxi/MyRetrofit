@@ -5,17 +5,25 @@ import android.os.Bundle
 import android.util.Log
 import retrofit2.*
 import retrofit2.converter.gson.GsonConverterFactory
+import ru.startandroid.develop.myretrofit.databinding.ActivityMainBinding
 
 
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var binding: ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        RetrofitClient.getClient().create<API>().getPosts().enqueue(object : Callback<List<User>> {
+        RetrofitClient.getClient().create(API::class.java).getUsers().enqueue(object : Callback<List<User>> {
             override fun onResponse(call: Call<List<User>>, response: Response<List<User>>) {
                 response.body()?.forEach {
-                    Log.e("element", it.title)
+
+                   val users = response.body() ?: listOf()
+                    binding.users.adapter = UserAdapter(users)
+                    Log.e("element", it.name)
                 }
             }
 
@@ -34,10 +42,11 @@ object RetrofitClient {
     fun getClient(): Retrofit {
         if (retrofit == null) {
             retrofit = Retrofit.Builder()
-                .baseUrl("https://jsonplaceholder.typicode.com/user")
+                .baseUrl("https://jsonplaceholder.typicode.com/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
         }
         return retrofit!!
     }
 }
+
