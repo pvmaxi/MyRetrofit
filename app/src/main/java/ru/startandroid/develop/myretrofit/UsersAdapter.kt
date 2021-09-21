@@ -1,7 +1,11 @@
 package ru.startandroid.develop.myretrofit
 
+import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import ru.startandroid.develop.myretrofit.databinding.ActivityUserBinding
 
@@ -12,7 +16,13 @@ class UserAdapter(var users: List<User>) : RecyclerView.Adapter<UserAdapter.Hold
 
             fun bind(user: User) {
                 binding.userId.text = user.name
-                binding.title.text = user.username
+                binding.userId.setOnClickListener{
+                    startActivity(Intent(binding.root.context, TwoWindowActivity::class.java))
+                }
+            }
+
+            private fun startActivity(intent: Intent) {
+                TODO()
             }
         }
 
@@ -27,5 +37,4 @@ class UserAdapter(var users: List<User>) : RecyclerView.Adapter<UserAdapter.Hold
         override fun getItemCount(): Int {
             return users.size
         }
-
     }
