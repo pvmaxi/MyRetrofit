@@ -1,12 +1,10 @@
 package ru.startandroid.develop.myretrofit
 
-import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.Gson
 import ru.startandroid.develop.myretrofit.databinding.ActivityUserBinding
 
 class UserAdapter(var users: List<User>) : RecyclerView.Adapter<UserAdapter.Holder>() {
@@ -17,12 +15,12 @@ class UserAdapter(var users: List<User>) : RecyclerView.Adapter<UserAdapter.Hold
             fun bind(user: User) {
                 binding.userId.text = user.name
                 binding.userId.setOnClickListener{
-                    startActivity(Intent(binding.root.context, TwoWindowActivity::class.java))
-                }
-            }
+                    val intent = Intent(binding.root.context, TwoWindowActivity::class.java)
 
-            private fun startActivity(intent: Intent) {
-                TODO()
+                    intent.putExtra("user", Gson().toJson(user))
+
+                    binding.root.context.startActivity(intent)
+                }
             }
         }
 
